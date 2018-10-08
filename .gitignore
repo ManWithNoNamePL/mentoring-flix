@@ -1,0 +1,5 @@
+/mentoring-flix.iml
+/.idea/
+flix-core/.mvn/
+flix-core/src/main/resources/static/
+flix-core/src/main/resources/templates/
