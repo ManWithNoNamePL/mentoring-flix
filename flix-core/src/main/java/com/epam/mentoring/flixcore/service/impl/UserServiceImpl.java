@@ -6,6 +6,8 @@ import com.epam.mentoring.flixcore.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -18,12 +20,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserById(Integer id) {
+    public User getUserById(long id) {
         return userRepository.getOne(id);
     }
 
     @Override
     public void deleteUser(User user){
         userRepository.delete(user);
+    }
+
+    @Override
+    public List<User> findAllUsers() {
+        return userRepository.findAll();
+    }
+
+    @Override
+    public boolean isUserExist(User user) {
+        return userRepository.existsById(user.getUserId());
     }
 }
