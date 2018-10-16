@@ -13,33 +13,32 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.util.List;
 
 @Controller
+@RequestMapping("/user")
 public class UserController {
-
-    public static final String USER_PATH_ROOT = "/user/";
 
     @Autowired
     private UserService userService;
 
 
-    @RequestMapping(value = USER_PATH_ROOT, method = RequestMethod.GET)
+    @GetMapping
     public ResponseEntity<List<User>> listAllUsers() {
         List<User> users = userService.findAllUsers();
         if(users.isEmpty()){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
         }
-        return new ResponseEntity<>(users, HttpStatus.OK);
+        return ResponseEntity.ok(users);
     }
 
-    @RequestMapping(value = USER_PATH_ROOT + "{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<User> getUser(@PathVariable("id") long id) {
         User user = userService.getUserById(id);
         if (user == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
         }
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        return ResponseEntity.ok(user);
     }
 
-    @RequestMapping(value = USER_PATH_ROOT, method = RequestMethod.POST)
+    @PostMapping
     public ResponseEntity<Void> createUser(@RequestBody User user, UriComponentsBuilder ucBuilder) {
         if (userService.isUserExist(user)) {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
@@ -48,22 +47,22 @@ public class UserController {
         userService.createUser(user);
 
         HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(ucBuilder.path(USER_PATH_ROOT + "{id}").buildAndExpand(user.getUserId()).toUri());
+        headers.setLocation(ucBuilder.path("/{id}").buildAndExpand(user.getUserId()).toUri());
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = USER_PATH_ROOT + "{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity<User> updateUser(@PathVariable("id") long id, @RequestBody User user) {
         User currentUser = userService.getUserById(id);
 
         if (currentUser==null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
         }
 
         updateEntity(user, currentUser);
 
         userService.createUser(currentUser);
-        return new ResponseEntity<>(currentUser, HttpStatus.OK);
+        return ResponseEntity.ok(currentUser);
     }
 
     private void updateEntity(@RequestBody User user, User currentUser) {
@@ -72,14 +71,14 @@ public class UserController {
         currentUser.setPassword(user.getPassword());
     }
 
-    @RequestMapping(value = USER_PATH_ROOT + "{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<User> deleteUser(@PathVariable("id") long id) {
         User user = userService.getUserById(id);
         if (user == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
         }
 
         userService.deleteUser(user);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return ResponseEntity.noContent().build();
     }
 }
