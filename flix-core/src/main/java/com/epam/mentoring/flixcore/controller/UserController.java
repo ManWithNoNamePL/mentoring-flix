@@ -29,7 +29,7 @@ public class UserController {
         return ResponseEntity.ok(users);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @GetMapping(value = "/{id}")
     public ResponseEntity<User> getUser(@PathVariable("id") long id) {
         User user = userService.getUserById(id);
         if (user == null) {
@@ -51,7 +51,7 @@ public class UserController {
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    @PutMapping(value = "/{id}")
     public ResponseEntity<User> updateUser(@PathVariable("id") long id, @RequestBody User user) {
         User currentUser = userService.getUserById(id);
 
@@ -71,7 +71,7 @@ public class UserController {
         currentUser.setPassword(user.getPassword());
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @DeleteMapping(value = "/{id}")
     public ResponseEntity<User> deleteUser(@PathVariable("id") long id) {
         User user = userService.getUserById(id);
         if (user == null) {

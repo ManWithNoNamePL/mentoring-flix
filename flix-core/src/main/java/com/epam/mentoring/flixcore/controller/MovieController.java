@@ -29,7 +29,7 @@ public class MovieController {
         return ResponseEntity.ok(movies);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @GetMapping(value = "/{id}")
     public ResponseEntity<Movie> getMovie(@PathVariable("id") long id) {
         Movie movie = movieService.getMovieById(id);
         if (movie == null) {
@@ -51,7 +51,7 @@ public class MovieController {
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    @PutMapping(value = "/{id}")
     public ResponseEntity<Movie> updateMovie(@PathVariable("id") long id, @RequestBody Movie movie) {
         Movie currentMovie = movieService.getMovieById(id);
 
@@ -71,7 +71,7 @@ public class MovieController {
         currentMovie.setGenre(movie.getGenre());
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @DeleteMapping(value = "/{id}")
     public ResponseEntity<Movie> deleteMovie(@PathVariable("id") long id) {
         Movie movie = movieService.getMovieById(id);
         if (movie == null) {
