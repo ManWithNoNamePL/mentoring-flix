@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class MovieServiceImpl implements MovieService {
@@ -15,8 +16,8 @@ public class MovieServiceImpl implements MovieService {
     private MovieRepository movieRepository;
 
     @Override
-    public void createMovie(Movie movie) {
-        movieRepository.save(movie);
+    public Movie createMovie(Movie movie) {
+        return movieRepository.save(movie);
     }
 
     @Override
@@ -37,5 +38,10 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public boolean isMovieExist(Movie movie) {
         return movieRepository.existsById(movie.getMovieId());
+    }
+
+    @Override
+    public Optional<Movie> getMovieByTitle(String title) {
+        return movieRepository.findByTitle(title);
     }
 }
