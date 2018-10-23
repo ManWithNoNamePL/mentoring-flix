@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface MovieService {
 
-    Movie createMovie(Movie movie);
+    Optional<Movie> createMovie(Movie movie);
 
     Movie getMovieById(long id);
 

@@ -16,8 +16,8 @@ public class MovieServiceImpl implements MovieService {
     private MovieRepository movieRepository;
 
     @Override
-    public Movie createMovie(Movie movie) {
-        return movieRepository.save(movie);
+    public Optional<Movie> createMovie(Movie movie) {
+        return Optional.of(movieRepository.save(movie));
     }
 
     @Override

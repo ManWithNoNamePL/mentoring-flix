@@ -1,6 +1,7 @@
 package com.epam.mentoring.flixcore.model;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 public class Movie {
@@ -62,6 +63,22 @@ public class Movie {
 
     public void setRuntime(int runtime) {
         this.runtime = runtime;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Movie movie = (Movie) o;
+        return movieId == movie.movieId &&
+                runtime == movie.runtime &&
+                Objects.equals(title, movie.title) &&
+                genre == movie.genre;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(movieId, title, genre, runtime);
     }
 
     @Override

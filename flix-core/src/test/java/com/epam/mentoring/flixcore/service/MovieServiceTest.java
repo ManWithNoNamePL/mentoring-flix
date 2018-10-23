@@ -28,46 +28,47 @@ public class MovieServiceTest {
     private Movie titanic;
 
     @Before
-    public void setUp() throws Exception {
+    public void initMovies() throws Exception {
         lordOfTheRings = new Movie("Lord of the Rings", Genre.FANTASY, 146);
-        titanic = new Movie ( "Titanic", Genre.DRAMA, 152);
-        movieService.createMovie(lordOfTheRings);
-        movieService.createMovie(titanic);
+        titanic = new Movie("Titanic", Genre.DRAMA, 152);
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void deleteMovies() throws Exception {
         movieService.deleteMovie(lordOfTheRings);
         movieService.deleteMovie(titanic);
     }
 
     @Test
     public void shouldReturnMovieByTitle() {
-        // when
+        movieService.createMovie(lordOfTheRings);
+
         Optional<Movie> found = movieService.getMovieByTitle(lordOfTheRings.getTitle());
 
-        // then
-        assertThat(found.get().getTitle()).isEqualTo(lordOfTheRings.getTitle());
+        assertThat(found.get()).isEqualTo(lordOfTheRings);
     }
 
     @Test
     public void shouldCreateMovies() {
-        // when
+        movieService.createMovie(lordOfTheRings);
+        movieService.createMovie(titanic);
+
         List<Movie> allMovies = movieService.findAllMovies();
 
-        // then
         assertThat(allMovies)
                 .isNotNull()
-                .isNotEmpty();
+                .isNotEmpty()
+                .containsAnyOf(titanic);
     }
 
     @Test
     public void shouldDeleteMovie() {
-        // when
+        movieService.createMovie(lordOfTheRings);
+        movieService.createMovie(titanic);
+
         movieService.deleteMovie(lordOfTheRings);
         List<Movie> allMovies = movieService.findAllMovies();
 
-        // then
         assertThat(allMovies)
                 .hasSize(1)
                 .doesNotContain(lordOfTheRings);
@@ -75,9 +76,10 @@ public class MovieServiceTest {
 
     @Test
     public void shouldReturnTrueIfMovieExist() {
-        // when
+        movieService.createMovie(titanic);
+
         boolean movieExist = movieService.isMovieExist(titanic);
-        // then
+
         assertThat(movieExist)
                 .isTrue();
     }
