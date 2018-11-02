@@ -12,8 +12,12 @@ import java.util.Optional;
 @Service
 public class MovieServiceImpl implements MovieService {
 
-    @Autowired
     private MovieRepository movieRepository;
+
+    @Autowired
+    public MovieServiceImpl(MovieRepository movieRepository) {
+        this.movieRepository = movieRepository;
+    }
 
     @Override
     public Optional<Movie> createMovie(Movie movie) {
