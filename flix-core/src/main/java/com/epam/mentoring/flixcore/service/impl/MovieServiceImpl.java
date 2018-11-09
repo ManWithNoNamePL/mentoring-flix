@@ -3,6 +3,7 @@ package com.epam.mentoring.flixcore.service.impl;
 import com.epam.mentoring.flixcore.model.Movie;
 import com.epam.mentoring.flixcore.repository.MovieRepository;
 import com.epam.mentoring.flixcore.service.MovieService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,14 +11,10 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor(onConstructor = @__(@Autowired))
 public class MovieServiceImpl implements MovieService {
 
     private MovieRepository movieRepository;
-
-    @Autowired
-    public MovieServiceImpl(MovieRepository movieRepository) {
-        this.movieRepository = movieRepository;
-    }
 
     @Override
     public Optional<Movie> createMovie(Movie movie) {
