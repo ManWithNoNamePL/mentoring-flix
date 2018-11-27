@@ -20,6 +20,7 @@ public class User {
 
     private int age;
 
+    @Enumerated(EnumType.STRING)
     private Gender gender;
 
     @ManyToMany(cascade = CascadeType.ALL)
