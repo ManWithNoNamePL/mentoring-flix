@@ -14,9 +14,15 @@ public class User {
     @Column(name = "user_id", nullable = false)
     private long userId;
 
-    private String login;
+    private String email;
 
     private String password;
+
+    private String name;
+
+    private String lastName;
+
+    private int active;
 
     private int age;
 

@@ -1,6 +1,5 @@
 package com.epam.mentoring.flixcore.controller;
 
-import com.epam.mentoring.flixcore.model.Role;
 import com.epam.mentoring.flixcore.model.User;
 import com.epam.mentoring.flixcore.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,12 +39,12 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> createUser(@RequestBody User user, @RequestBody Role role, UriComponentsBuilder ucBuilder) {
+    public ResponseEntity<Void> createUser(@RequestBody User user, UriComponentsBuilder ucBuilder) {
         if (userService.isUserExist(user)) {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
 
-        userService.createUser(user, role);
+        userService.saveUser(user);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(ucBuilder.path("/{id}").buildAndExpand(user.getUserId()).toUri());
@@ -53,8 +52,7 @@ public class UserController {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable("id") long id, @RequestBody User user,
-                                           @RequestBody Role role) {
+    public ResponseEntity<User> updateUser(@PathVariable("id") long id, @RequestBody User user) {
         User currentUser = userService.getUserById(id);
 
         if (currentUser==null) {
@@ -63,12 +61,12 @@ public class UserController {
 
         updateEntity(user, currentUser);
 
-        userService.createUser(currentUser, role);
+        userService.saveUser(currentUser);
         return ResponseEntity.ok(currentUser);
     }
 
     private void updateEntity(@RequestBody User user, User currentUser) {
-        currentUser.setLogin(user.getLogin());
+        currentUser.setEmail(user.getEmail());
         currentUser.setAge(user.getAge());
         currentUser.setPassword(user.getPassword());
     }
