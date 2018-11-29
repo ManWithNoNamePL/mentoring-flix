@@ -11,10 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
@@ -33,12 +30,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void saveUser(User user) {
-        System.out.println("1user = " + user);
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         user.setActive(1);
         UserRole userRole = userRoleRepository.findByRole(Role.ADMIN);
         user.setUserRoles(new HashSet<>(Arrays.asList(userRole)));
-        System.out.println("2user = " + user);
         userRepository.save(user);
     }
 
