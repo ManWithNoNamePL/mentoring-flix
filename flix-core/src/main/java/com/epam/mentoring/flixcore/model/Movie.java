@@ -18,6 +18,7 @@ public class Movie {
 
     private  String title;
 
+    @Enumerated(EnumType.STRING)
     private Genre genre;
 
     private int runtime;
