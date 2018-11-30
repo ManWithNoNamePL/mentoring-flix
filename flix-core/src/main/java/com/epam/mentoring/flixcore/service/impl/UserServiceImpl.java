@@ -8,11 +8,10 @@ import com.epam.mentoring.flixcore.repository.UserRoleRepository;
 import com.epam.mentoring.flixcore.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
@@ -22,12 +21,22 @@ public class UserServiceImpl implements UserService {
 
     private UserRoleRepository userRoleRepository;
 
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
     @Override
-    public void createUser(User user, Role role) {
-        UserRole userRole = userRoleRepository.findByRole(role);
-        user.setUserRoles(new HashSet<>(Collections.singletonList(userRole)));
+    public User findUserByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    @Override
+    public void saveUser(User user) {
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        user.setActive(1);
+        UserRole userRole = userRoleRepository.findByRole(Role.ADMIN);
+        user.setUserRoles(new HashSet<>(Arrays.asList(userRole)));
         userRepository.save(user);
     }
+
 
     @Override
     public User getUserById(long id) {
@@ -49,8 +58,4 @@ public class UserServiceImpl implements UserService {
         return userRepository.existsById(user.getUserId());
     }
 
-    @Override
-    public User getUserByLogin(String login) {
-        return userRepository.findByLogin(login);
-    }
 }
