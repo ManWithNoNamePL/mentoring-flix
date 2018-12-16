@@ -5,6 +5,8 @@ import com.epam.mentoring.flixcore.repository.MovieRepository;
 import com.epam.mentoring.flixcore.service.MovieService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -44,5 +46,11 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public Optional<Movie> getMovieByTitle(String title) {
         return movieRepository.findByTitle(title);
+    }
+
+    @Override
+    public List<Movie> getViewedMoviesForUser(long userId, int movieNumber) {
+        Pageable limit = PageRequest.of(0, movieNumber);
+        return movieRepository.getViewedMoviesForUser(userId, limit);
     }
 }

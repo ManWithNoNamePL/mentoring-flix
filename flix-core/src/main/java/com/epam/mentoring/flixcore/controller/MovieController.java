@@ -81,4 +81,15 @@ public class MovieController {
         movieService.deleteMovie(movie);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping(value = "/viewed/{userId}")
+    public ResponseEntity<List<Movie>> getViewedMoviesForUser(@PathVariable("userId") long userId, @RequestParam("moviesNumber") int movieNumber) {
+        System.out.println("userId = " + userId);
+        System.out.println("movieNumber = " + movieNumber);
+        List<Movie> viewedMovies = movieService.getViewedMoviesForUser(userId, movieNumber);
+        if(viewedMovies.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        return  ResponseEntity.ok(viewedMovies);
+    }
 }

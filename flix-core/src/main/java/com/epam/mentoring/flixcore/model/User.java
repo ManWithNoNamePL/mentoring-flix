@@ -1,5 +1,6 @@
 package com.epam.mentoring.flixcore.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
@@ -28,4 +29,9 @@ public class User {
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "role_mapping", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<UserRole> userRoles;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "user_movie", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "movie_id"))
+    private Set<Movie> viewedMovies;
+
 }

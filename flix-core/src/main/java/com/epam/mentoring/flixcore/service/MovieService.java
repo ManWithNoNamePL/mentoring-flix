@@ -18,4 +18,6 @@ public interface MovieService {
     boolean isMovieExist(Movie movie);
 
     Optional<Movie> getMovieByTitle(String title);
+
+    List<Movie> getViewedMoviesForUser(long userId, int movieNumber);
 }
